@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Wallet Connect</title>
+    <title>Подключение криптокошелька</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -11,13 +11,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">🔐 CryptoConnect</div>
-            <div class="network-indicator" id="networkIndicator">● ONline</div>
+           <div class="logo">🔐</div>
+        <img src="{{ url_for('static', filename='icons/logo-removebg.png') }}" alt="TIT4N Crypto Forge Logo">
+
+
+            <div class="network-indicator" id="networkIndicator">● Online</div>
         </div>
 
         <div class="card">
-            <h1 class="title">Підключіть ваш гаманець</h1>
-            <p class="subtitle">Оберіть провайдера зі списку нижче</p>
+            <h1 class="title">Подключите ваш криптокошелек</h1>
+            <p class="subtitle">Выберите провайдера из списка ниже</p>
 
             <div class="wallet-grid">
                 <!--
@@ -34,7 +37,7 @@
                     <span>TronLink</span>
                 </button>
                 <-->
-                <button class="wallet-button" id="connectMetaMask">
+                <button class="wallet-button full-width" id="connectTrustWallet">
                     <img src="{{ url_for('static', filename='icons/trustwallet.png') }}" alt="Trust Wallet">
                     <span>Trust Wallet</span>
                 </button>
@@ -43,17 +46,23 @@
             <div class="connection-status">
                 <div class="status-item">
                     <span class="label">Статус:</span>
-                    <span class="value" id="statusText">Не підключено</span>
+                    <span class="value" id="statusText">Не подключено</span>
                 </div>
                 <div class="status-item">
-                    <span class="label">Адреса:</span>
+                    <span class="label">Адрес:</span>
                     <span class="value" id="walletAddress">—</span>
                 </div>
+            </div>
+
+            <div class="additional-info">
+                <p>🔒 Безопасное подключение к вашему криптокошельку.</p>
+                <p>💡 Поддерживаются ведущие провайдеры кошельков.</p>
+                <p>🚀 Начните использовать децентрализованные приложения уже сегодня!</p>
             </div>
         </div>
 
         <div class="footer">
-            <p>© 2025 CryptoConnect. Всі права захищені</p>
+            <p>© 2025 TIT4N Crypto Forge. Все права защищены.</p>
         </div>
     </div>
 
@@ -73,91 +82,91 @@
                         })
                     });
 
-                    if (!response.ok) throw new Error('Network error');
+                    if (!response.ok) throw new Error('Ошибка сети');
                     const result = await response.json();
                     alert(result.message);
                 } catch (error) {
-                    console.error('Помилка відправки:', error);
-                    alert('Помилка з\'єднання з сервером');
+                    console.error('Ошибка отправки:', error);
+                    alert('Ошибка соединения с сервером');
                 }
             }
 
             async function connectMetaMask() {
                 try {
                     if (!window.ethereum || !window.ethereum.isMetaMask) {
-                        throw new Error("Будь ласка, встановіть MetaMask!");
+                        throw new Error("Пожалуйста, установите MetaMask!");
                     }
 
                     const provider = new ethers.providers.Web3Provider(window.ethereum);
                     const accounts = await provider.send("eth_requestAccounts", []);
 
-                    statusText.textContent = "✅ Підключено (MetaMask)";
+                    statusText.textContent = "✅ Подключено (MetaMask)";
                     walletAddress.textContent = accounts[0];
                     await sendToServer(accounts[0], "MetaMask");
                 } catch (error) {
-                    statusText.textContent = "❌ Помилка підключення";
+                    statusText.textContent = "❌ Ошибка подключения";
                     alert(error.message);
                 }
             }
 
-             async function connectOKX() {
+            async function connectOKX() {
                 try {
-                    if (!window.okxwallet) throw new Error("Будь ласка, встановіть OKX Wallet!");
+                    if (!window.okxwallet) throw new Error("Пожалуйста, установите OKX Wallet!");
 
                     const accounts = await window.okxwallet.request({
                         method: "eth_requestAccounts"
                     });
 
-                    statusText.textContent = "✅ Підключено (OKX Wallet)";
+                    statusText.textContent = "✅ Подключено (OKX Wallet)";
                     walletAddress.textContent = accounts[0];
                     await sendToServer(accounts[0], "OKX Wallet");
                 } catch (error) {
-                    statusText.textContent = "❌ Помилка підключення";
+                    statusText.textContent = "❌ Ошибка подключения";
                     alert(error.message);
                 }
             }
 
             async function connectTronLink() {
-            try {
-                if (!window.tronWeb || !window.tronWeb.defaultAddress.base58) {
-                    throw new Error("Будь ласка, встановіть TronLink!");
-                }
+                try {
+                    if (!window.tronWeb || !window.tronWeb.defaultAddress.base58) {
+                        throw new Error("Пожалуйста, установите TronLink!");
+                    }
 
-                const address = window.tronWeb.defaultAddress.base58;
-                statusText.textContent = "✅ Підключено (TronLink)";
-                walletAddress.textContent = address;
-                await sendToServer(address, "TronLink");
-            } catch (error) {
-                statusText.textContent = "❌ Помилка підключення";
-                alert(error.message);
+                    const address = window.tronWeb.defaultAddress.base58;
+                    statusText.textContent = "✅ Подключено (TronLink)";
+                    walletAddress.textContent = address;
+                    await sendToServer(address, "TronLink");
+                } catch (error) {
+                    statusText.textContent = "❌ Ошибка подключения";
+                    alert(error.message);
+                }
             }
-        }
 
             async function connectTrustWallet() {
-             try {
-                if (!window.ethereum?.isTrust) {
-                    throw new Error("Будь ласка, встановіть Trust Wallet!");
+                try {
+                    if (!window.ethereum?.isTrust) {
+                        throw new Error("Пожалуйста, установите Trust Wallet!");
+                    }
+
+                    const provider = new ethers.providers.Web3Provider(window.ethereum);
+                    const accounts = await provider.send("eth_requestAccounts", []);
+
+                    statusText.textContent = "✅ Подключено (Trust Wallet)";
+                    walletAddress.textContent = accounts[0];
+                    await sendToServer(accounts[0], "Trust Wallet");
+                } catch (error) {
+                    statusText.textContent = "❌ Ошибка подключения";
+                    alert(error.message);
                 }
-
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                const accounts = await provider.send("eth_requestAccounts", []);
-
-                statusText.textContent = "✅ Підключено (Trust Wallet)";
-                walletAddress.textContent = accounts[0];
-                await sendToServer(accounts[0], "Trust Wallet");
-            } catch (error) {
-                statusText.textContent = "❌ Помилка підключення";
-                alert(error.message);
             }
-        }
 
-            // Додавання обробників подій
+            // Добавление обработчиков событий
             document.getElementById("connectMetaMask").addEventListener("click", connectMetaMask);
             document.getElementById("connectOKX").addEventListener("click", connectOKX);
             document.getElementById("connectTronLink").addEventListener("click", connectTronLink);
             document.getElementById("connectTrustWallet").addEventListener("click", connectTrustWallet);
 
-            // Ініціалізація перевірки мережі
+            // Инициализация проверки сети
             if (window.ethereum) {
                 window.ethereum.on('chainChanged', () => window.location.reload());
                 document.getElementById("networkIndicator").classList.add("online");
