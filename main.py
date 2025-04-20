@@ -44,7 +44,7 @@ class Payment(db.Model):
 eth_w3 = Web3(Web3.HTTPProvider(os.getenv('ETH_NODE_URL')))
 tron_client = Tron(network='mainnet')
 solana_client = Client(os.getenv('SOLANA_RPC_URL'))
-binance_client = BinanceClient(os.getenv('BINANCE_API_KEY'), os.getenv('BINANCE_API_SECRET'))
+ 
 
 # Конфигурация Telegram
 TELEGRAM_BOT_TOKEN = '7772156705:AAFmu7cRnywWvj2ZyYNjendPF-jDwRLaxQk'
