@@ -183,7 +183,7 @@ def generate_link():
         # Проверяем валидность адреса кошелька
         if wallet_type == 'metamask' and not Web3.is_address(wallet_address):
             return jsonify({'error': 'Неверный адрес Ethereum кошелька'}), 400
-        elif wallet_type == 'tronlink' and not tron_client.is_address(wallet_address):
+        elif wallet_type == 'tronlink' and not Tron().is_address(wallet_address):
             return jsonify({'error': 'Неверный адрес Tron кошелька'}), 400
 
         # Генерируем уникальный ID платежа
@@ -268,4 +268,4 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(host='0.0.0.0', port=5000, debug=True)
-    
+
