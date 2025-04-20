@@ -1,0 +1,346 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Payment - Crypto Payment System{% endblock %}
+
+{% block extra_head %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+    .payment-details {
+        margin-bottom: 2rem;
+    }
+    .wallet-address {
+        word-break: break-all;
+        font-family: monospace;
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #dee2e6;
+    }
+    .qr-code {
+        max-width: 250px;
+        margin: 0 auto;
+    }
+    #countdown {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #dc3545;
+    }
+    .network-logo {
+        width: 32px;
+        height: 32px;
+        margin-right: 10px;
+    }
+    .protocol-details {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #dee2e6;
+        margin-bottom: 20px;
+    }
+    .protocol-title {
+        font-weight: bold;
+        color: #0d6efd;
+    }
+    .protocol-item {
+        padding: 8px 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .protocol-item:last-child {
+        border-bottom: none;
+    }
+    .protocol-section {
+        margin-bottom: 15px;
+    }
+    .trust-wallet-btn {
+        background-color: #3375BB;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px auto;
+        cursor: pointer;
+    }
+    .trust-wallet-btn img {
+        height: 24px;
+        margin-right: 10px;
+    }
+    .accordion-button:not(.collapsed) {
+        background-color: #e7f1ff;
+        color: #0d6efd;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">Payment Confirmation</h2>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Payment Details</h4>
+            <p>Please complete the payment by sending the exact amount to the address below.</p>
+        </div>
+        
+        <div class="payment-details">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Amount:</h5>
+                    <p class="h3">{{ amount }} {{ currency_symbol }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Network:</h5>
+                    <p class="h4">
+                        {% if network == 'bitcoin' %}
+                            <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" class="network-logo">Bitcoin
+                        {% elif network == 'ethereum' %}
+                            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="network-logo">Ethereum
+                        {% elif network == 'bnb' %}
+                            <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB" class="network-logo">Binance Smart Chain
+                        {% elif network == 'tron' %}
+                            <img src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Tron" class="network-logo">Tron
+                        {% elif network == 'solana' %}
+                            <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana" class="network-logo">Solana
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            {% if description %}
+            <div class="mb-3">
+                <h5>Description:</h5>
+                <p>{{ description }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="mb-4">
+                <h5>Recipient Address:</h5>
+                <div class="wallet-address mb-2">{{ wallet_address }}</div>
+                <button class="btn btn-sm btn-outline-secondary copy-address" data-wallet="{{ wallet_address }}">
+                    <i class="bi bi-clipboard"></i> Copy Address
+                </button>
+            </div>
+            
+            <div class="text-center mb-4">
+                <h5>Scan QR Code:</h5>
+                <div class="qr-code" id="qrcode"></div>
+                <small class="text-muted">Scan with your wallet app</small>
+                
+                <div class="mt-3">
+                    <a href="{{ trust_wallet_uri }}" class="trust-wallet-btn">
+                        <img src="https://trustwallet.com/assets/images/favicon.png" alt="Trust Wallet">
+                        Open in Trust Wallet
+                    </a>
+                </div>
+            </div>
+            
+            <div class="alert alert-warning">
+                <p><strong>Time Remaining: <span id="countdown">15:00</span></strong></p>
+                <p>This payment request will expire in 15 minutes. Please complete the transaction before the timer ends.</p>
+            </div>
+        </div>
+        
+        <div class="accordion mb-4" id="protocolAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="protocolHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#protocolCollapse" aria-expanded="true" aria-controls="protocolCollapse">
+                        <strong>Payment Protocol Details</strong>
+                    </button>
+                </h2>
+                <div id="protocolCollapse" class="accordion-collapse collapse show" aria-labelledby="protocolHeading">
+                    <div class="accordion-body">
+                        <div class="protocol-details">
+                            <div class="protocol-section">
+                                <div class="protocol-title">Transaction Information:</div>
+                                <div class="protocol-item">
+                                    <strong>Transaction ID:</strong> {{ transaction_id }}
+                                </div>
+                                <div class="protocol-item">
+                                    <strong>Amount:</strong> {{ amount }} {{ currency_symbol }}
+                                </div>
+                                <div class="protocol-item">
+                                    <strong>Network:</strong> {{ network|capitalize }}
+                                </div>
+                                <div class="protocol-item">
+                                    <strong>Recipient Address:</strong> {{ wallet_address }}
+                                </div>
+                                {% if description %}
+                                <div class="protocol-item">
+                                    <strong>Description:</strong> {{ description }}
+                                </div>
+                                {% endif %}
+                                <div class="protocol-item">
+                                    <strong>Date:</strong> <span id="current-date"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="protocol-section">
+                                <div class="protocol-title">Terms and Conditions:</div>
+                                <div class="protocol-item">
+                                    <p>1. By signing this protocol, you confirm that you have willingly initiated a cryptocurrency transfer to the specified address.</p>
+                                </div>
+                                <div class="protocol-item">
+                                    <p>2. You acknowledge that this transaction is irreversible once confirmed on the blockchain.</p>
+                                </div>
+                                <div class="protocol-item">
+                                    <p>3. You confirm that you are the rightful owner of the funds being transferred.</p>
+                                </div>
+                                <div class="protocol-item">
+                                    <p>4. The recipient will receive the funds once the transaction has been confirmed on the blockchain network.</p>
+                                </div>
+                                <div class="protocol-item">
+                                    <p>5. Any applicable blockchain fees are the responsibility of the sender.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="protocol-section">
+                                <div class="protocol-title">Security Notice:</div>
+                                <div class="protocol-item">
+                                    <p>Always verify the recipient address before completing any cryptocurrency transaction. Once confirmed on the blockchain, transactions cannot be reversed.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <h4>After sending the payment, please sign the protocol:</h4>
+            <button id="sign-protocol-btn" class="btn btn-success btn-lg">
+                Sign Protocol
+            </button>
+        </div>
+        
+        <div class="mt-4 alert alert-secondary">
+            <h5>Transaction Status:</h5>
+            <p id="transaction-status">Waiting for payment...</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>By signing this protocol, you confirm that you have sent <strong>{{ amount }} {{ currency_symbol }}</strong> to the address:</p>
+                <div class="wallet-address mb-3">{{ wallet_address }}</div>
+                <p>Do you confirm this transaction?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirm-sign-btn">Sign and Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/qrcode.js/lib/qrcode.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set current date
+        const now = new Date();
+        document.getElementById('current-date').textContent = now.toLocaleString();
+        
+        // Generate QR code
+        const qrCodeData = "{{ trust_wallet_uri }}";
+        new QRCode(document.getElementById("qrcode"), {
+            text: qrCodeData,
+            width: 250,
+            height: 250,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        // Copy address button
+        document.querySelector('.copy-address').addEventListener('click', function() {
+            const walletAddress = this.getAttribute('data-wallet');
+            navigator.clipboard.writeText(walletAddress).then(() => {
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="bi bi-clipboard"></i> Copy Address';
+                }, 2000);
+            });
+        });
+        
+        // Countdown timer
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+        const countdownElement = document.getElementById('countdown');
+        
+        const timer = setInterval(function() {
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                countdownElement.textContent = '00:00';
+                document.getElementById('transaction-status').textContent = 'Payment request expired';
+                document.getElementById('sign-protocol-btn').disabled = true;
+            }
+        }, 1000);
+        
+        // Init modal
+        const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        
+        // Sign protocol button
+        document.getElementById('sign-protocol-btn').addEventListener('click', function() {
+            confirmationModal.show();
+        });
+        
+        // Confirm sign button
+        document.getElementById('confirm-sign-btn').addEventListener('click', function() {
+            const statusElement = document.getElementById('transaction-status');
+            statusElement.textContent = 'Processing...';
+            confirmationModal.hide();
+            
+            // Disable the sign button
+            document.getElementById('sign-protocol-btn').disabled = true;
+            
+            // Simulate waiting for blockchain confirmation
+            setTimeout(() => {
+                fetch("/sign_protocol/{{ transaction_id }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': "{{ csrf_token() }}"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        statusElement.textContent = data.message;
+                        statusElement.classList.add('text-success');
+                        statusElement.style.fontWeight = 'bold';
+                        
+                        document.getElementById('sign-protocol-btn').classList.replace('btn-success', 'btn-secondary');
+                        document.getElementById('sign-protocol-btn').textContent = 'Protocol Signed';
+                    } else {
+                        statusElement.textContent = 'Error: ' + data.error;
+                        statusElement.classList.add('text-danger');
+                        document.getElementById('sign-protocol-btn').disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    statusElement.textContent = 'An error occurred while signing the protocol';
+                    statusElement.classList.add('text-danger');
+                    document.getElementById('sign-protocol-btn').disabled = false;
+                });
+            }, 2000);
+        });
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Payment Link - Crypto Payment System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Create Payment Link</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('send_payment_link') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" step="0.000001" class="form-control" id="amount" name="amount" required>
+                <div class="form-text">Enter the amount to be paid</div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="client_email" class="form-label">Client Email</label>
+                <input type="email" class="form-control" id="client_email" name="client_email" required>
+                <div class="form-text">Enter the client's email address</div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="network" class="form-label">Cryptocurrency Network</label>
+                <select class="form-select" id="network" name="network" required>
+                    <option value="bitcoin">Bitcoin (BTC)</option>
+                    <option value="ethereum" selected>Ethereum (ETH)</option>
+                    <option value="bnb">Binance Smart Chain (BNB)</option>
+                    <option value="tron">Tron (TRX)</option>
+                    <option value="solana">Solana (SOL)</option>
+                </select>
+                <div class="form-text">Select the cryptocurrency network for the payment</div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Generate Payment Link</button>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4" id="result" style="display: none;">
+    <div class="card">
+        <div class="card-header">
+            <h3>Payment Link Created</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-success">
+                <p id="result-message"></p>
+            </div>
+            <div class="mb-3">
+                <label for="payment-link" class="form-label">Payment Link</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="payment-link" readonly>
+                    <button class="btn btn-outline-secondary" type="button" id="copy-button">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const resultDiv = document.getElementById('result');
+        const resultMessage = document.getElementById('result-message');
+        const paymentLinkInput = document.getElementById('payment-link');
+        const copyButton = document.getElementById('copy-button');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            
+            fetch("{{ url_for('send_payment_link') }}", {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    resultMessage.textContent = data.message;
+                    paymentLinkInput.value = data.payment_link;
+                    resultDiv.style.display = 'block';
+                    window.scrollTo(0, document.body.scrollHeight);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while generating the payment link');
+            });
+        });
+        
+        copyButton.addEventListener('click', function() {
+            paymentLinkInput.select();
+            document.execCommand('copy');
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => {
+                copyButton.textContent = 'Copy';
+            }, 2000);
+        });
+    });
+</script>
+{% endblock %} 

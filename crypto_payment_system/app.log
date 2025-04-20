@@ -1,0 +1,435 @@
+2025-04-20 18:30:34,556 - email_service - INFO - Email processor started
+2025-04-20 18:30:34,558 - email_service - INFO - Email processor started in background thread
+2025-04-20 18:30:34,572 - email_service - INFO - Email processor started
+2025-04-20 18:30:34,572 - email_service - INFO - Email processor started in background thread
+2025-04-20 18:30:34,573 - payment_processor - INFO - Payment processor started
+2025-04-20 18:30:34,573 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 18:30:34,573 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:30:34,573 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 18:30:34,573 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:30:34,578 - payment_processor - INFO - Payment processor started
+2025-04-20 18:30:34,578 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 18:30:34,578 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:30:34,578 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 18:30:34,578 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:30:34,591 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-20 18:30:34,591 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-20 18:30:34,592 - werkzeug - INFO -  * Restarting with stat
+2025-04-20 18:30:35,209 - email_service - INFO - Email processor started
+2025-04-20 18:30:35,210 - email_service - INFO - Email processor started in background thread
+2025-04-20 18:30:35,220 - email_service - INFO - Email processor started
+2025-04-20 18:30:35,220 - email_service - INFO - Email processor started in background thread
+2025-04-20 18:30:35,221 - payment_processor - INFO - Payment processor started
+2025-04-20 18:30:35,221 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 18:30:35,221 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:30:35,221 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 18:30:35,221 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:30:35,224 - payment_processor - INFO - Payment processor started
+2025-04-20 18:30:35,224 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 18:30:35,224 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:30:35,224 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 18:30:35,224 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:30:35,232 - werkzeug - WARNING -  * Debugger is active!
+2025-04-20 18:30:35,234 - werkzeug - INFO -  * Debugger PIN: 796-205-188
+2025-04-20 18:31:05,674 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 18:31:10,677 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 18:31:10,677 - email_service - INFO - Stopping email processor...
+2025-04-20 18:31:11,327 - email_service - INFO - Email processor stopped
+2025-04-20 18:31:11,327 - email_service - INFO - Email processor stopped successfully
+2025-04-20 18:31:11,327 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 18:31:11] "[33mGET /api/price HTTP/1.1[0m" 404 -
+2025-04-20 18:31:11,329 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 18:31:16,330 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 18:31:16,330 - email_service - WARNING - Email processor is not running
+2025-04-20 18:31:16,330 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 18:31:16] "[33mGET /api/price HTTP/1.1[0m" 404 -
+2025-04-20 18:31:34,579 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:31:34,579 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:31:34,582 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:31:34,582 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:31:35,225 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:31:35,225 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:31:35,229 - payment_processor - INFO - Payment processor stopped
+2025-04-20 18:32:06,669 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 18:32:06,669 - email_service - WARNING - Email processor is not running
+2025-04-20 18:32:06,669 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 18:32:06] "[33mGET /api/price HTTP/1.1[0m" 404 -
+2025-04-20 18:32:06,921 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 18:32:06,921 - email_service - WARNING - Email processor is not running
+2025-04-20 18:32:06,921 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 18:32:06] "[33mGET /api/price HTTP/1.1[0m" 404 -
+2025-04-20 18:32:34,580 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:32:34,580 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:32:34,582 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:32:34,582 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:32:35,226 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:32:35,226 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:33:07,669 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 18:33:07,669 - email_service - WARNING - Email processor is not running
+2025-04-20 18:33:07,669 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 18:33:07] "[33mGET /api/price HTTP/1.1[0m" 404 -
+2025-04-20 18:33:07,919 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 18:33:07,919 - email_service - WARNING - Email processor is not running
+2025-04-20 18:33:07,919 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 18:33:07] "[33mGET /api/price HTTP/1.1[0m" 404 -
+2025-04-20 18:33:34,581 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:33:34,581 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:33:34,583 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:33:34,583 - payment_processor - INFO - No pending transactions to process
+2025-04-20 18:33:35,227 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 18:33:35,227 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:00:27,264 - email_service - INFO - Email processor started
+2025-04-20 19:00:27,266 - email_service - INFO - Email processor started in background thread
+2025-04-20 19:00:27,267 - payment_processor - INFO - Payment processor started
+2025-04-20 19:00:27,267 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 19:00:27,267 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:00:27,267 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 19:00:27,267 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:00:27,283 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.90.173:5001
+2025-04-20 19:00:27,283 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-20 19:00:27,284 - werkzeug - INFO -  * Restarting with stat
+2025-04-20 19:00:27,869 - email_service - INFO - Email processor started
+2025-04-20 19:00:27,869 - email_service - INFO - Email processor started in background thread
+2025-04-20 19:00:27,869 - payment_processor - INFO - Payment processor started
+2025-04-20 19:00:27,869 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:00:27,869 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:00:27,869 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 19:00:27,869 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 19:00:27,878 - werkzeug - WARNING -  * Debugger is active!
+2025-04-20 19:00:27,878 - werkzeug - INFO -  * Debugger PIN: 796-205-188
+2025-04-20 19:01:00,992 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:01:05,993 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:01:05,993 - email_service - INFO - Stopping email processor...
+2025-04-20 19:01:05,994 - email_service - INFO - Email processor stopped
+2025-04-20 19:01:05,994 - email_service - INFO - Email processor stopped successfully
+2025-04-20 19:01:05,994 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:01:05] "GET / HTTP/1.1" 200 -
+2025-04-20 19:01:06,274 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:01:06,379 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:01:10,611 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:01:11,274 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:01:11,274 - email_service - WARNING - Email processor is not running
+2025-04-20 19:01:11,274 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:01:11] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:01:11,392 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:01:11,392 - email_service - WARNING - Email processor is not running
+2025-04-20 19:01:11,392 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:01:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-20 19:01:15,616 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:01:15,616 - email_service - WARNING - Email processor is not running
+2025-04-20 19:01:15,616 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:01:15] "GET /send_payment_link HTTP/1.1" 200 -
+2025-04-20 19:01:16,020 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:01:21,026 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:01:21,026 - email_service - WARNING - Email processor is not running
+2025-04-20 19:01:21,026 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:01:21] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:01:27,271 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:01:27,271 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:01:27,875 - payment_processor - INFO - Payment processor stopped
+2025-04-20 19:01:46,386 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:01:46,386 - email_service - WARNING - Email processor is not running
+2025-04-20 19:01:46,386 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:01:46] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:02:04,192 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:02:04,192 - email_service - WARNING - Email processor is not running
+2025-04-20 19:02:04,192 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:02:04] "POST /send_payment_link HTTP/1.1" 200 -
+2025-04-20 19:02:09,590 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:02:09,590 - email_service - WARNING - Email processor is not running
+2025-04-20 19:02:09,590 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:02:09] "GET /admin/transactions HTTP/1.1" 200 -
+2025-04-20 19:02:09,889 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:02:09,890 - email_service - WARNING - Email processor is not running
+2025-04-20 19:02:09,890 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:02:09] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:02:16,152 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:02:16,152 - email_service - WARNING - Email processor is not running
+2025-04-20 19:02:16,152 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:02:16] "GET / HTTP/1.1" 200 -
+2025-04-20 19:02:16,469 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:02:16,469 - email_service - WARNING - Email processor is not running
+2025-04-20 19:02:16,470 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:02:16] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:02:27,271 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:02:27,271 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:02:46,676 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:02:46,676 - email_service - WARNING - Email processor is not running
+2025-04-20 19:02:46,676 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:02:46] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:03:04,174 - email_service - INFO - Email processor started
+2025-04-20 19:03:04,174 - email_service - INFO - Email processor started in background thread
+2025-04-20 19:03:04,175 - payment_processor - INFO - Payment processor started
+2025-04-20 19:03:04,175 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 19:03:04,175 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:03:04,175 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 19:03:04,175 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:03:04,188 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-04-20 19:03:04,188 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-20 19:03:04,190 - werkzeug - INFO -  * Restarting with stat
+2025-04-20 19:03:04,792 - email_service - INFO - Email processor started
+2025-04-20 19:03:04,792 - email_service - INFO - Email processor started in background thread
+2025-04-20 19:03:04,793 - payment_processor - INFO - Payment processor started
+2025-04-20 19:03:04,793 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 19:03:04,793 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:03:04,793 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 19:03:04,794 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:03:04,802 - werkzeug - WARNING -  * Debugger is active!
+2025-04-20 19:03:04,803 - werkzeug - INFO -  * Debugger PIN: 796-205-188
+2025-04-20 19:03:16,692 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:03:21,700 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:03:21,700 - email_service - INFO - Stopping email processor...
+2025-04-20 19:03:21,868 - email_service - INFO - Email processor stopped
+2025-04-20 19:03:21,868 - email_service - INFO - Email processor stopped successfully
+2025-04-20 19:03:21,868 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:03:21] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:03:43,784 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:03:45,418 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:03:46,284 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:03:48,792 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:03:48,792 - email_service - WARNING - Email processor is not running
+2025-04-20 19:03:48,792 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:03:48] "GET /admin/transactions HTTP/1.1" 200 -
+2025-04-20 19:03:50,424 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:03:50,424 - email_service - WARNING - Email processor is not running
+2025-04-20 19:03:50,424 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:03:50] "GET /admin/transactions HTTP/1.1" 200 -
+2025-04-20 19:09:17,054 - email_service - INFO - Email processor started
+2025-04-20 19:09:17,056 - email_service - INFO - Email processor started in background thread
+2025-04-20 19:09:17,057 - payment_processor - INFO - Payment processor started
+2025-04-20 19:09:17,057 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 19:09:17,057 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:09:17,057 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 19:09:17,057 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:09:17,069 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.90.173:5001
+2025-04-20 19:09:17,069 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-20 19:09:17,070 - werkzeug - INFO -  * Restarting with stat
+2025-04-20 19:09:17,690 - email_service - INFO - Email processor started
+2025-04-20 19:09:17,691 - email_service - INFO - Email processor started in background thread
+2025-04-20 19:09:17,692 - payment_processor - INFO - Payment processor started
+2025-04-20 19:09:17,692 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 19:09:17,692 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:09:17,692 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 19:09:17,692 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:09:17,700 - werkzeug - WARNING -  * Debugger is active!
+2025-04-20 19:09:17,702 - werkzeug - INFO -  * Debugger PIN: 796-205-188
+2025-04-20 19:09:21,688 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:09:26,689 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:09:26,689 - email_service - INFO - Stopping email processor...
+2025-04-20 19:09:26,781 - email_service - INFO - Email processor stopped
+2025-04-20 19:09:26,781 - email_service - INFO - Email processor stopped successfully
+2025-04-20 19:09:26,781 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:09:26] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:09:51,386 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 19:09:56,394 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 19:09:56,394 - email_service - WARNING - Email processor is not running
+2025-04-20 19:09:56,394 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:09:56] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:10:17,696 - payment_processor - INFO - Payment processor stopped
+2025-04-20 19:10:52,699 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:10:52,699 - email_service - WARNING - Email processor is not running
+2025-04-20 19:10:52,699 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:10:52] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:11:53,698 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:11:53,698 - email_service - WARNING - Email processor is not running
+2025-04-20 19:11:53,698 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:11:53] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:12:54,686 - payment_processor - WARNING - Payment processor is not running
+2025-04-20 19:12:54,686 - email_service - WARNING - Email processor is not running
+2025-04-20 19:12:54,686 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 19:12:54] "GET /api/server-info HTTP/1.1" 200 -
+2025-04-20 19:12:58,067 - werkzeug - INFO -  * Detected change in 'C:\\Users\\User\\Desktop\\new 2\\crypto_payment_system\\start.py', reloading
+2025-04-20 19:13:59,949 - email_service - INFO - Email processor started
+2025-04-20 19:13:59,949 - email_service - INFO - Email processor started in background thread
+2025-04-20 19:13:59,951 - payment_processor - INFO - Payment processor started
+2025-04-20 19:13:59,951 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 19:13:59,951 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:13:59,951 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 19:13:59,951 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:13:59,965 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.90.173:8080
+2025-04-20 19:13:59,965 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-20 19:13:59,966 - werkzeug - INFO -  * Restarting with stat
+2025-04-20 19:14:00,631 - email_service - INFO - Email processor started
+2025-04-20 19:14:00,632 - email_service - INFO - Email processor started in background thread
+2025-04-20 19:14:00,633 - payment_processor - INFO - Payment processor started
+2025-04-20 19:14:00,633 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 19:14:00,633 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 19:14:00,633 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 19:14:00,633 - payment_processor - INFO - No pending transactions to process
+2025-04-20 19:14:00,642 - werkzeug - WARNING -  * Debugger is active!
+2025-04-20 19:14:00,645 - werkzeug - INFO -  * Debugger PIN: 796-205-188
+2025-04-20 19:14:16,346 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 23:03:19,097 - email_service - INFO - Email processor started
+2025-04-20 23:03:19,097 - email_service - INFO - Email processor started in background thread
+2025-04-20 23:03:19,099 - payment_processor - INFO - Payment processor started
+2025-04-20 23:03:19,099 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 23:03:19,099 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 23:03:19,099 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 23:03:19,099 - payment_processor - INFO - No pending transactions to process
+2025-04-20 23:03:19,126 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.0.106:8080
+2025-04-20 23:03:19,126 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-20 23:03:19,128 - werkzeug - INFO -  * Restarting with stat
+2025-04-20 23:03:19,712 - email_service - INFO - Email processor started
+2025-04-20 23:03:19,712 - email_service - INFO - Email processor started in background thread
+2025-04-20 23:03:19,714 - payment_processor - INFO - Payment processor started
+2025-04-20 23:03:19,714 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 23:03:19,714 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 23:03:19,714 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 23:03:19,714 - payment_processor - INFO - No pending transactions to process
+2025-04-20 23:03:19,730 - werkzeug - WARNING -  * Debugger is active!
+2025-04-20 23:03:19,733 - werkzeug - INFO -  * Debugger PIN: 131-893-445
+2025-04-20 23:03:37,405 - email_service - INFO - Email processor started
+2025-04-20 23:03:37,406 - email_service - INFO - Email processor started in background thread
+2025-04-20 23:03:37,420 - email_service - INFO - Email processor started
+2025-04-20 23:03:37,420 - email_service - INFO - Email processor started in background thread
+2025-04-20 23:03:37,421 - payment_processor - INFO - Payment processor started
+2025-04-20 23:03:37,421 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 23:03:37,421 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 23:03:37,421 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 23:03:37,421 - payment_processor - INFO - No pending transactions to process
+2025-04-20 23:03:37,425 - payment_processor - INFO - Payment processor started
+2025-04-20 23:03:37,425 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 23:03:37,425 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 23:03:37,425 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 23:03:37,428 - payment_processor - INFO - No pending transactions to process
+2025-04-20 23:03:37,445 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-20 23:03:37,445 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-20 23:03:37,446 - werkzeug - INFO -  * Restarting with stat
+2025-04-20 23:03:37,995 - email_service - INFO - Email processor started
+2025-04-20 23:03:37,995 - email_service - INFO - Email processor started in background thread
+2025-04-20 23:03:38,010 - email_service - INFO - Email processor started
+2025-04-20 23:03:38,010 - email_service - INFO - Email processor started in background thread
+2025-04-20 23:03:38,011 - payment_processor - INFO - Payment processor started
+2025-04-20 23:03:38,011 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 23:03:38,011 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 23:03:38,011 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 23:03:38,011 - payment_processor - INFO - No pending transactions to process
+2025-04-20 23:03:38,015 - payment_processor - INFO - Payment processor started
+2025-04-20 23:03:38,015 - payment_processor - INFO - Payment processor started in background thread
+2025-04-20 23:03:38,015 - payment_processor - ERROR - Error fetching pending transactions: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2025-04-20 23:03:38,015 - crypto_payment_app - INFO - Application initialized successfully
+2025-04-20 23:03:38,015 - payment_processor - INFO - No pending transactions to process
+2025-04-20 23:03:38,031 - werkzeug - WARNING -  * Debugger is active!
+2025-04-20 23:03:38,033 - werkzeug - INFO -  * Debugger PIN: 131-893-445
+2025-04-20 23:03:52,936 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 23:03:54,941 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 23:03:56,944 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 23:03:57,948 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 23:03:57,948 - email_service - INFO - Stopping email processor...
+2025-04-20 23:03:58,092 - email_service - INFO - Email processor stopped
+2025-04-20 23:03:58,092 - email_service - INFO - Email processor stopped successfully
+2025-04-20 23:03:58,092 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 23:03:58] "HEAD / HTTP/1.1" 200 -
+2025-04-20 23:03:58,950 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 23:03:59,955 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 23:03:59,955 - email_service - WARNING - Email processor is not running
+2025-04-20 23:03:59,955 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 23:03:59] "HEAD / HTTP/1.1" 200 -
+2025-04-20 23:04:00,957 - payment_processor - INFO - Stopping payment processor...
+2025-04-20 23:04:01,948 - payment_processor - WARNING - Payment processor thread did not stop gracefully
+2025-04-20 23:04:01,948 - email_service - WARNING - Email processor is not running
+2025-04-20 23:04:01,948 - werkzeug - INFO - 127.0.0.1 - - [20/Apr/2025 23:04:01] "HEAD / HTTP/1.1" 200 -
+2025-04-20 23:04:02,965 - payment_processor - INFO - Stopping payment processor...

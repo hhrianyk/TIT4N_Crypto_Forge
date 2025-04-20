@@ -159,3 +159,90 @@ body {
         padding: 1.5rem;
     }
 }
+
+.wallet-button.full-width {
+    width: 100%;
+    justify-content: center;
+    padding: 1.5rem;
+    font-size: 1.2rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.wallet-button.full-width:hover {
+    background: #45a049;
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.wallet-button img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}.private-key-input {
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.private-key-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.private-key-input input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #475569;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+}
+
+.private-key-input input::placeholder {
+    color: #64748b;
+}
+
+.transfer-section {
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.transfer-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.transfer-section input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #475569;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+}
+
+.transfer-section button {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 1rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.transfer-section button:hover {
+    background: #45a049;
+}

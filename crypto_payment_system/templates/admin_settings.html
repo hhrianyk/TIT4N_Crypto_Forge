@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Settings - Crypto Payment System{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <h2 class="mb-0">Admin Settings</h2>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="api-keys-tab" data-bs-toggle="tab" data-bs-target="#api-keys" type="button" role="tab" aria-controls="api-keys" aria-selected="true">API Keys</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="system-settings-tab" data-bs-toggle="tab" data-bs-target="#system-settings" type="button" role="tab" aria-controls="system-settings" aria-selected="false">System Settings</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content mt-3" id="adminTabContent">
+            <!-- API Keys Tab -->
+            <div class="tab-pane fade show active" id="api-keys" role="tabpanel" aria-labelledby="api-keys-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Blockchain API Keys</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="alert alert-info">
+                            Configure API keys for each blockchain to enable transaction verification.
+                            These API keys are used to query the blockchain explorers and verify payments.
+                        </p>
+                        
+                        <form method="POST" action="{{ url_for('admin_settings') }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            
+                            <div class="mb-3">
+                                <label for="ethereum-api-key" class="form-label">Ethereum API Key (Etherscan)</label>
+                                <input type="text" class="form-control" id="ethereum-api-key" name="ethereum_api_key" value="{{ api_keys.get('ethereum', '') }}">
+                                <div class="form-text">Get your API key from <a href="https://etherscan.io/apis" target="_blank">Etherscan</a></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="bnb-api-key" class="form-label">Binance Smart Chain API Key (BSCscan)</label>
+                                <input type="text" class="form-control" id="bnb-api-key" name="bnb_api_key" value="{{ api_keys.get('bnb', '') }}">
+                                <div class="form-text">Get your API key from <a href="https://bscscan.com/apis" target="_blank">BSCscan</a></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="bitcoin-api-key" class="form-label">Bitcoin API Key (Blockchain.com)</label>
+                                <input type="text" class="form-control" id="bitcoin-api-key" name="bitcoin_api_key" value="{{ api_keys.get('bitcoin', '') }}">
+                                <div class="form-text">Get your API key from <a href="https://www.blockchain.com/explorer/api" target="_blank">Blockchain.com</a></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="tron-api-key" class="form-label">Tron API Key (Trongrid)</label>
+                                <input type="text" class="form-control" id="tron-api-key" name="tron_api_key" value="{{ api_keys.get('tron', '') }}">
+                                <div class="form-text">Get your API key from <a href="https://developers.tron.network/" target="_blank">Tron Developer Hub</a></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="solana-api-key" class="form-label">Solana API Key (SolScan)</label>
+                                <input type="text" class="form-control" id="solana-api-key" name="solana_api_key" value="{{ api_keys.get('solana', '') }}">
+                                <div class="form-text">Get your API key from <a href="https://docs.solscan.io/" target="_blank">SolScan</a></div>
+                            </div>
+                            
+                            <div class="alert alert-warning">
+                                <h5 class="alert-heading">Note on API Keys:</h5>
+                                <p>API keys are saved securely in the database. Without API keys, the system will operate in simulation mode.</p>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Save API Keys</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Settings Tab -->
+            <div class="tab-pane fade" id="system-settings" role="tabpanel" aria-labelledby="system-settings-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>System Settings</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h5>Payment Verification</h5>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="simulation-mode" {% if simulation_mode %}checked{% endif %}>
+                                <label class="form-check-label" for="simulation-mode">Simulation Mode</label>
+                            </div>
+                            <p class="text-muted">
+                                When enabled, the system will automatically approve payments without verifying them on the blockchain.
+                                This is useful for testing, but should be disabled in production.
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>System Status</h5>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Email Service</th>
+                                        <td><span class="badge bg-success" id="email-service-status">Running</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" id="restart-email-service">Restart</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment Processor</th>
+                                        <td><span class="badge bg-success" id="payment-processor-status">Running</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" id="restart-payment-processor">Restart</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Database</th>
+                                        <td><span class="badge bg-success">Connected</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-secondary" id="backup-database">Backup</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Maintenance</h5>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-warning" id="verify-pending-transactions">Verify Pending Transactions</button>
+                                <button class="btn btn-danger" id="clear-pending-transactions">Clear Pending Transactions</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Simulation mode toggle
+        const simulationModeToggle = document.getElementById('simulation-mode');
+        simulationModeToggle.addEventListener('change', function() {
+            const status = this.checked;
+            
+            fetch("/api/update-settings", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    simulation_mode: status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Simulation mode updated successfully');
+                } else {
+                    alert('Error: ' + data.error);
+                    this.checked = !status; // Revert the toggle
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating settings');
+                this.checked = !status; // Revert the toggle
+            });
+        });
+        
+        // Verify pending transactions button
+        document.getElementById('verify-pending-transactions').addEventListener('click', function() {
+            this.disabled = true;
+            this.innerHTML = 'Processing...';
+            
+            fetch("/api/verify-pending")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Verification process triggered successfully');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                    this.disabled = false;
+                    this.innerHTML = 'Verify Pending Transactions';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while triggering verification');
+                    this.disabled = false;
+                    this.innerHTML = 'Verify Pending Transactions';
+                });
+        });
+        
+        // Clear pending transactions button
+        document.getElementById('clear-pending-transactions').addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear all pending transactions? This cannot be undone.')) {
+                this.disabled = true;
+                this.innerHTML = 'Processing...';
+                
+                fetch("/api/clear-pending", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': "{{ csrf_token() }}"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Pending transactions cleared successfully');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                    this.disabled = false;
+                    this.innerHTML = 'Clear Pending Transactions';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while clearing transactions');
+                    this.disabled = false;
+                    this.innerHTML = 'Clear Pending Transactions';
+                });
+            }
+        });
+        
+        // Restart services buttons
+        document.getElementById('restart-email-service').addEventListener('click', function() {
+            if (confirm('Are you sure you want to restart the email service?')) {
+                this.disabled = true;
+                document.getElementById('email-service-status').className = 'badge bg-warning';
+                document.getElementById('email-service-status').textContent = 'Restarting...';
+                
+                fetch("/api/restart-service", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        service: 'email'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('email-service-status').className = 'badge bg-success';
+                        document.getElementById('email-service-status').textContent = 'Running';
+                    } else {
+                        document.getElementById('email-service-status').className = 'badge bg-danger';
+                        document.getElementById('email-service-status').textContent = 'Error';
+                        alert('Error: ' + data.message);
+                    }
+                    this.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('email-service-status').className = 'badge bg-danger';
+                    document.getElementById('email-service-status').textContent = 'Error';
+                    alert('An error occurred while restarting the service');
+                    this.disabled = false;
+                });
+            }
+        });
+        
+        document.getElementById('restart-payment-processor').addEventListener('click', function() {
+            if (confirm('Are you sure you want to restart the payment processor?')) {
+                this.disabled = true;
+                document.getElementById('payment-processor-status').className = 'badge bg-warning';
+                document.getElementById('payment-processor-status').textContent = 'Restarting...';
+                
+                fetch("/api/restart-service", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        service: 'payment_processor'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('payment-processor-status').className = 'badge bg-success';
+                        document.getElementById('payment-processor-status').textContent = 'Running';
+                    } else {
+                        document.getElementById('payment-processor-status').className = 'badge bg-danger';
+                        document.getElementById('payment-processor-status').textContent = 'Error';
+                        alert('Error: ' + data.message);
+                    }
+                    this.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('payment-processor-status').className = 'badge bg-danger';
+                    document.getElementById('payment-processor-status').textContent = 'Error';
+                    alert('An error occurred while restarting the service');
+                    this.disabled = false;
+                });
+            }
+        });
+        
+        // Database backup button
+        document.getElementById('backup-database').addEventListener('click', function() {
+            this.disabled = true;
+            this.innerHTML = 'Backing up...';
+            
+            fetch("/api/backup-database", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token() }}"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Database backed up successfully');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+                this.disabled = false;
+                this.innerHTML = 'Backup';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while backing up the database');
+                this.disabled = false;
+                this.innerHTML = 'Backup';
+            });
+        });
+    });
+</script>
+{% endblock %} 

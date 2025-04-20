@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Crypto Payment System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title text-center mb-4">Automated Crypto Payment System</h2>
+        <p class="lead text-center">Generate payment links for your clients and process crypto transactions with manual confirmation.</p>
+        
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-link-45deg text-primary" style="font-size: 2rem;"></i>
+                        <h4 class="card-title">Create Payment Link</h4>
+                        <p>Generate a payment link to send to your clients</p>
+                        <a href="{{ url_for('send_payment_link') }}" class="btn btn-primary">Create Link</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-list-check text-primary" style="font-size: 2rem;"></i>
+                        <h4 class="card-title">View Transactions</h4>
+                        <p>Check the status of all transactions</p>
+                        <a href="{{ url_for('view_transactions') }}" class="btn btn-primary">View Transactions</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-gear-fill text-primary" style="font-size: 2rem;"></i>
+                        <h4 class="card-title">Admin Console</h4>
+                        <p>Configure wallets and manage payments</p>
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">Open Console</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5">
+            <h3>Supported Networks</h3>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" style="width: 24px; height: 24px; margin-right: 10px;">
+                        Bitcoin
+                    </div>
+                    <span class="badge bg-primary rounded-pill">BTC</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" style="width: 24px; height: 24px; margin-right: 10px;">
+                        Ethereum
+                    </div>
+                    <span class="badge bg-primary rounded-pill">ETH</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB" style="width: 24px; height: 24px; margin-right: 10px;">
+                        Binance Smart Chain
+                    </div>
+                    <span class="badge bg-primary rounded-pill">BNB</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <img src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Tron" style="width: 24px; height: 24px; margin-right: 10px;">
+                        Tron
+                    </div>
+                    <span class="badge bg-primary rounded-pill">TRX</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana" style="width: 24px; height: 24px; margin-right: 10px;">
+                        Solana
+                    </div>
+                    <span class="badge bg-primary rounded-pill">SOL</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="alert alert-info mt-4">
+            <h4 class="alert-heading">Trust Wallet Integration</h4>
+            <p>All payment links are compatible with Trust Wallet for a seamless payment experience.</p>
+            <hr>
+            <p class="mb-0">Configure your wallet addresses in the Admin Console to start receiving payments.</p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

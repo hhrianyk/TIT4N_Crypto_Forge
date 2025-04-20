@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Transactions - Crypto Payment System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>All Transactions</h2>
+    </div>
+    <div class="card-body">
+        {% if transactions %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Amount</th>
+                            <th>Network</th>
+                            <th>Client Email</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions %}
+                            <tr class="{% if transaction.status == 'completed' %}table-success{% elif transaction.status == 'confirmed' %}table-warning{% elif transaction.status == 'pending' %}table-light{% endif %}">
+                                <td>{{ transaction.id[:8] }}...</td>
+                                <td>{{ transaction.amount }} {% if transaction.network == 'bitcoin' %}BTC{% elif transaction.network == 'ethereum' %}ETH{% elif transaction.network == 'bnb' %}BNB{% elif transaction.network == 'tron' %}TRX{% elif transaction.network == 'solana' %}SOL{% endif %}</td>
+                                <td>{{ transaction.network.capitalize() }}</td>
+                                <td>{{ transaction.client_email }}</td>
+                                <td>
+                                    {% if transaction.status == 'completed' %}
+                                        <span class="badge bg-success">Completed</span>
+                                    {% elif transaction.status == 'confirmed' %}
+                                        <span class="badge bg-warning text-dark">Confirmed</span>
+                                    {% elif transaction.status == 'pending' %}
+                                        <span class="badge bg-secondary">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ transaction.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ transaction.updated_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ url_for('confirm_payment', transaction_id=transaction.id) }}?amount={{ transaction.amount }}&network={{ transaction.network }}" class="btn btn-sm btn-primary">View</a>
+                                        <button class="btn btn-sm btn-outline-secondary copy-link" data-link="{{ url_for('confirm_payment', transaction_id=transaction.id, _external=True) }}?amount={{ transaction.amount }}&network={{ transaction.network }}">Copy Link</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <p>No transactions found. Create a payment link to get started.</p>
+                <a href="{{ url_for('send_payment_link') }}" class="btn btn-primary">Create Payment Link</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add event listeners to copy buttons
+        document.querySelectorAll('.copy-link').forEach(button => {
+            button.addEventListener('click', function() {
+                const link = this.getAttribute('data-link');
+                navigator.clipboard.writeText(link).then(() => {
+                    this.textContent = 'Copied!';
+                    setTimeout(() => {
+                        this.textContent = 'Copy Link';
+                    }, 2000);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %} 

